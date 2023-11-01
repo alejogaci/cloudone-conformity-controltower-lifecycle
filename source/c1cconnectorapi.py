@@ -59,7 +59,7 @@ class CloudOneConformityConnector:
                 },
             }
         }
-        return self.request(POST, "/accounts", body)
+        return self.request(POST, '/accounts', body)
 
     def remove_account(self, aws_account_id):
         conformity_account_id = self.get_account_id(aws_account_id)
