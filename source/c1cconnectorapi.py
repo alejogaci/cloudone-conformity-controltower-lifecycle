@@ -38,25 +38,27 @@ class CloudOneConformityConnector:
             self.external_id = self.create_external_id()
         return self.external_id
 
-    def add_account(self, role_arn):
+    def add_account(self, role_arn):      
+        client = boto3.client('organizations')
+        response = client.describe_account(
+            AccountId=role_arn.split(":")[4]
+        )
+        name = str(response['Account']['Name'])
         body = {
-          "data": {
-            "type": "account",
-            "attributes": {
-              "name": role_arn.rsplit(':')[4],
-              "environment": "ControlTower",
-              "access": {
-                "keys": {
-                  "roleArn": role_arn,
-                  "externalId": self.external_id
-                }
-              },
-              "costPackage": False,
-              "hasRealTimeMonitoring": True
+            "data": {
+                "type": "account",
+                "attributes": {
+                    "name": name,  # AWS account ID
+                    "environment": role_arn.split(":")[4],
+                    "access": {
+                        "keys": {"roleArn": role_arn, "externalId": self.external_id}
+                    },
+                    #"costPackage": False,
+                    "hasRealTimeMonitoring": True,
+                },
             }
-          }
         }
-        return self.request(POST, '/accounts', body)
+        return self.request(POST, "/accounts", body)
 
     def remove_account(self, aws_account_id):
         conformity_account_id = self.get_account_id(aws_account_id)
