@@ -179,6 +179,7 @@ Resources:
                   - "logs:PutLogEvents"
                   - "organizations:ListRoots"
                   - "organizations:ListAccounts"
+                  - "organizations:DescribeAccount"
                   - "sts:GetCallerIdentity"
                 Resource: "*"
               - Effect: "Allow"
