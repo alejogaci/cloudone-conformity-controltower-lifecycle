@@ -2,6 +2,7 @@ import urllib3
 import json
 import logging
 import os
+import boto3
 
 logger = logging.getLogger()
 GET = 'GET'
